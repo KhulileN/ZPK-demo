@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Color ZKP Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    button { padding: 10px 20px; font-size: 16px; margin: 5px; }
+    #output { margin-top: 20px; font-weight: bold; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>Interactive Zero-Knowledge Proof: Color Challenge</h1>
+  <p>Audience, pick a secret color: Red, Blue, or Green (keep it in mind).</p>
+  <p>You will prove knowledge of the secret color without revealing it.</p>
+
+  <button onclick="startChallenge()">Start Challenge</button>
+  <div id="output"></div>
+
+  <script>
+    let secretColor = null; // Mental color
+    const colors = ['Red', 'Blue', 'Green'];
+
+    function startChallenge() {
+      secretColor = prompt("Prover: Enter the audience's secret color mentally (Red, Blue, Green)");
+      if (!colors.includes(secretColor)) {
+        alert("Enter Red, Blue, or Green exactly.");
+        return;
+      }
+      document.getElementById("output").innerText = "Challenge started! Click 'Next Round' to continue.";
+      nextRoundBtn();
+    }
+
+    function nextRoundBtn() {
+      const btn = document.createElement("button");
+      btn.innerText = "Next Round";
+      btn.onclick = runRound;
+      document.body.appendChild(btn);
+    }
+
+    function runRound() {
+      const challengeColor = colors[Math.floor(Math.random() * 3)];
+      const outputDiv = document.getElementById("output");
+      
+      outputDiv.innerText = `Verifier challenge: Is your secret color ${challengeColor}?`;
+
+      // Simulate ZKP: respond correctly without revealing secret
+      const response = (challengeColor === secretColor) ? "Yes" : "No";
+      outputDiv.innerText += `\nProver responds: ${response}`;
+
+      // Repeat a few rounds
+      const rounds = document.querySelectorAll("#output button").length;
+      if (Math.random() < 0.3) { // Randomly end challenge after a few rounds
+        outp
